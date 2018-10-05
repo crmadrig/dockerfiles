@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoringapp
+  labels:
+    app: monitoringapp
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: monitoringapp
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: monitoringapp
+spec:
+  replicas: 1
+  selector:
+    app: monitoringapp
+  template:
+    metadata:
+      name: monitoringapp
+      labels:
+        app: monitoringapp
+    spec:
+      containers:
+        - name: monitoringapp
+          image: <image>:<tag>
+          imagePullPolicy: Always
+          env:
+          - name: BW_LOGLEVEL
+            value: ERROR
+          - name: DB_URL
+            value: postgresql://<user>:<pw>@<url>:<port>/<db>
+          - name: PERSISTENCE_TYPE
+            value: postgres
+          ports:
+            - containerPort: 8080
