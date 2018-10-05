@@ -1,0 +1,68 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    fabric8.io/git-commit: aaee98059ce5f30b45bb0ecf164574b84a22aac6
+    fabric8.io/git-branch: master
+    fabric8.io/metrics-path: dashboard/file/kubernetes-pods.json/?var-project=AccountService&var-version=1.0.0-SNAPSHOT
+    fabric8.io/build-id: "25"
+    fabric8.io/git-url: gogsadmin/AccountService.parent/commit/aaee98059ce5f30b45bb0ecf164574b84a22aac6
+  labels:
+    app: AccountService
+    provider: fabric8
+    version: 1.0.0-SNAPSHOT
+    group: com.tibco.bw
+  name: bw-account
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: AccountService
+      provider: fabric8
+      group: com.tibco.bw
+  template:
+    metadata:
+      annotations:
+        fabric8.io/git-commit: aaee98059ce5f30b45bb0ecf164574b84a22aac6
+        fabric8.io/git-branch: master
+        fabric8.io/metrics-path: dashboard/file/kubernetes-pods.json/?var-project=AccountService&var-version=1.0.0-SNAPSHOT
+        fabric8.io/build-id: "25"
+        fabric8.io/git-url: gogsadmin/AccountService.parent/commit/aaee98059ce5f30b45bb0ecf164574b84a22aac6
+      labels:
+        container: bw-account
+        project: bw-account
+        app: AccountService
+        provider: fabric8
+        version: 1.0.0-SNAPSHOT
+        group: com.tibco.bw
+      name: bw-account
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: JAEGER_SAMPLER_MANAGER_HOST_PORT
+          value: jaeger-agent:5778
+        - name: JAEGER_AGENT_HOST
+          value: jaeger-agent
+        - name: BW_APP_MONITORING_CONFIG
+          value: '{"url":"http://monitoringapp"}'
+        - name: BW_JAVA_OPTS
+          value: -Dbw.engine.opentracing.enable=true -Dbw.monitor.data.format=json
+            -Dbw.monitor.provider=REST -Dbw.monitor.rest.port=80 -Dbw.monitor.rest.host=monitoringapp
+            -Dbw.monitor.rest.context=/api/v1
+        - name: APP_CONFIG_PROFILE
+          value: Docker
+        - name: JAEGER_AGENT_PORT
+          value: "6831"
+        - name: CONSUL_SERVER_URL
+          value: http://18.207.205.140:8500
+        - name: BW_PROFILE
+          value: Docker
+        image: 267317892887.dkr.ecr.us-east-1.amazonaws.com/tibco/banqio-sample:accountservice
+        imagePullPolicy: Always
+        name: bw-account
+        ports:
+        - containerPort: 8080
+          name: http
