@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    fabric8.io/git-commit: aaee98059ce5f30b45bb0ecf164574b84a22aac6
+    fabric8.io/git-branch: master
+    fabric8.io/build-id: "25"
+    fabric8.io/git-url: gogsadmin/AccountService.parent/commit/aaee98059ce5f30b45bb0ecf164574b84a22aac6
+  labels:
+    container: bw-account
+    provider: fabric8
+    project: bw-account
+    group: com.tibco.bw
+    expose: "true"
+    app: AccountService
+    version: 1.0.0-SNAPSHOT
+  name: bw-account-service
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    container: bw-account
+    provider: fabric8
+    project: bw-account
+    group: com.tibco.bw
+    app: AccountService
+  type: LoadBalancer

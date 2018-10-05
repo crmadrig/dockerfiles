@@ -1,0 +1,20 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    container: bw-customer
+    provider: fabric8
+    project: bw-customer
+    group: com.tibco.bw
+    expose: "true"
+    app: CustomerService
+    version: 1.0.0-SNAPSHOT
+  name: bw-customer-service
+  namespace: default
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: bw-customer-service

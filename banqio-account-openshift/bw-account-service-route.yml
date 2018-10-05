@@ -1,0 +1,20 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    container: bw-account
+    provider: fabric8
+    project: bw-account
+    group: com.tibco.bw
+    expose: "true"
+    app: AccountService
+    version: 1.0.0-SNAPSHOT
+  name: bw-account-service
+  namespace: default
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: bw-account-service

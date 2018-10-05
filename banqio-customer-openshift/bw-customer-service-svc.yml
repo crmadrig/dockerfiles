@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    fabric8.io/git-commit: 12e3b4b70ef151af34d64f46753158a5697fa819
+    fabric8.io/git-branch: master
+    fabric8.io/build-id: "26"
+    fabric8.io/git-url: gogsadmin/CustomerService.parent/commit/12e3b4b70ef151af34d64f46753158a5697fa819
+  labels:
+    container: bw-customer
+    provider: fabric8
+    project: bw-customer
+    group: com.tibco.bw
+    expose: "true"
+    app: CustomerService
+    version: 1.0.0-SNAPSHOT
+  name: bw-customer-service
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    container: bw-customer
+    provider: fabric8
+    project: bw-customer
+    group: com.tibco.bw
+    app: CustomerService
+  type: LoadBalancer
