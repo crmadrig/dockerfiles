@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul
+  namespace: default
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8500
+  selector:
+    app: consul
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul
+  namespace: default
+  labels:
+    app: consul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      containers:
+      - name: consul
+        image: progrium/consul
+        imagePullPolicy: IfNotPresent
+        args:
+        - "-server"
+        - "-bootstrap"
+        - "-ui-dir=/ui"
+        ports:
+        - containerPort: 8500
+        - containerPort: 8400
+        - containerPort: 53
